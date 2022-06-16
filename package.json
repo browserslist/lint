@@ -30,7 +30,10 @@
     "test": "c8 pnpm unit && eslint .",
     "unit": "NODE_ENV=test uvu test .test.js"
   },
-  "dependencies": {},
+  "dependencies": {
+    "browserslist": "github:browserslist/browserslist",
+    "picocolors": "^1.0.0"
+  },
   "bin": {
     "browserslist-lint": "lint.js"
   },
