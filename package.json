@@ -35,7 +35,7 @@
     "picocolors": "^1.0.0"
   },
   "bin": {
-    "browserslist-lint": "lint.js"
+    "browserslist-lint": "cli.js"
   },
   "devDependencies": {
     "@logux/eslint-config": "^47.2.0",

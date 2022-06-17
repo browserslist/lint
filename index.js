@@ -204,7 +204,7 @@ const CHECKS = {
       }
     })
     if (countries.length > 0) {
-      let msg = 'given config has poor coverage in '
+      let msg = 'poor coverage in '
       let regions = countries.slice(0, 5).join(', ')
       if (countries.length > 5) {
         regions += ', and ' + (countries.length - 5) + ' more regions'
@@ -245,14 +245,10 @@ export function formatReport(problems) {
   report += problems.reduce((str, problem) => {
     offset = maxProblemIdWidth - problem.id.length + 3
     offset = Array(offset).join(' ')
-
-    return (
-      str +
-      pico.yellow('[' + problem.id + ']') +
-      offset +
-      problem.message +
-      '\n'
-    )
+    let message = problem.message.replace(/`[^`]+`/g, code => {
+      return pico.yellow(code.slice(1, -1))
+    })
+    return str + pico.gray(problem.id) + offset + message + '\n'
   }, '')
 
   report += '\n' + pico.red('✖ ') + problems.length + ' problems\n'
