@@ -1,66 +1,74 @@
-import { is, ok } from 'uvu/assert'
+import './no-color.js'
+
+import { equal } from 'uvu/assert'
 import { test } from 'uvu'
 
 import { lint, formatReport } from '../index.js'
 
+function hasProblem(problems, id) {
+  equal(problems.filter(p => p.id === id).length, 1)
+}
+
+function doesNotHaveProblem(problems, id) {
+  equal(problems.filter(p => p.id === id).length, 0)
+}
+
 test('reports missed-not-dead problem', () => {
-  let problems = lint(['last 2 major versions', 'last 2 versions'])
-
-  is(problems.filter(p => p.id === 'missed-not-dead').length, 1)
-})
-
-test('does not reports missed-not-dead problem', () => {
-  let problems = lint(['last 2 major versions', 'last 2 versions', 'not dead'])
-
-  is(problems.filter(p => p.id === 'missed-not-dead').length, 0)
+  hasProblem(
+    lint(['last 2 major versions', 'last 2 versions']),
+    'missedNotDead'
+  )
+  doesNotHaveProblem(
+    lint(['last 2 major versions', 'last 2 versions', 'not dead']),
+    'missedNotDead'
+  )
 })
 
 test('reports limited-browsers problem', () => {
-  let problems = lint([
-    'last 2 firefox versions',
-    'last 2 firefox major versions',
-    'unreleased firefox versions',
-    'firefox 0-10',
-    'firefox > 0',
-    'firefox 11',
-    'chrome 11',
-    'chrome > 11'
-  ])
-
-  is(problems.filter(p => p.id === 'limited-browsers').length, 1)
-})
-
-test('does not reports limited-browsers problem', () => {
-  let problems = lint([
-    'chrome > 0',
-    'firefox > 0',
-    'edge > 0',
-    'ie > 0',
-    'opera > 0',
-    'safari > 0',
-    'samsung > 0'
-  ])
-
-  is(problems.filter(p => p.id === 'limited-browsers').length, 0)
+  hasProblem(
+    lint([
+      'last 2 firefox versions',
+      'last 2 firefox major versions',
+      'unreleased firefox versions',
+      'firefox 0-10',
+      'firefox > 0',
+      'firefox 11',
+      'chrome 11',
+      'chrome > 11'
+    ]),
+    'limitedBrowsers'
+  )
+  doesNotHaveProblem(
+    lint([
+      'chrome > 0',
+      'firefox > 0',
+      'edge > 0',
+      'ie > 0',
+      'opera > 0',
+      'safari > 0',
+      'samsung > 0'
+    ]),
+    'limitedBrowsers'
+  )
 })
 
 test('reports country-was-ignored problem', () => {
-  let problems = lint('last 2 versions')
-
-  is(problems.filter(p => p.id === 'country-was-ignored').length, 1)
-})
-
-test('does not reports country-was-ignored problem', () => {
-  let problems = lint('last 100 versions')
-
-  is(problems.filter(p => p.id === 'country-was-ignored').length, 0)
+  hasProblem(lint(['last 2 versions']), 'countryWasIgnored')
+  doesNotHaveProblem(lint(['last 100 versions']), 'countryWasIgnored')
 })
 
 test('formats report', () => {
-  let problems = lint('last 2 versions')
-  let report = formatReport(problems)
-
-  ok(report.length > 0)
+  equal(
+    formatReport(lint('last 2 versions')),
+    '' +
+      '[missedNotDead]      `not dead` query skipped ' +
+      'when using `last N versions` query\n' +
+      '[countryWasIgnored]  given config has poor coverage ' +
+      'in AM, AU, BE, CA, CH, and 22 more regions\n' +
+      '\n' +
+      '✖ 2 problems\n'
+  )
+  equal(formatReport(lint('>0%')), '')
 })
 
 test.run()

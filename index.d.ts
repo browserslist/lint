@@ -1,7 +1,7 @@
 import Browserslist from 'browserslist'
 
 export interface BrowserslistProblem {
-  id: string
+  id: 'missedNotDead' | 'limitedBrowsers' | 'countryWasIgnored'
   message: string
 }
 

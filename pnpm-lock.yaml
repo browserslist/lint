@@ -19,7 +19,7 @@ specifiers:
   uvu: ^0.5.3
 
 dependencies:
-  browserslist: github.com/browserslist/browserslist/10f043e2f8e97f9a419f25c572a8d6174fc0795a
+  browserslist: github.com/browserslist/browserslist/fd0c3174cb43dfcf99b685e50e6efb21df818f8f
   picocolors: 1.0.0
 
 devDependencies:
@@ -391,8 +391,8 @@ packages:
       esutils: 2.0.3
     dev: true
 
-  /electron-to-chromium/1.4.158:
-    resolution: {integrity: sha512-gppO3/+Y6sP432HtvwvuU8S+YYYLH4PmAYvQwqUtt9HDOmEsBwQfLnK9T8+1NIKwAS1BEygIjTaATC4H5EzvxQ==}
+  /electron-to-chromium/1.4.160:
+    resolution: {integrity: sha512-O1Z12YfyeX2LXYO7MdHIPazGXzLzQnr1ADW55U2ARQsJBPgfpJz3u+g3Mo2l1wSyfOCdiGqaX9qtV4XKZ0HNRA==}
     dev: false
 
   /emoji-regex/8.0.0:
@@ -1649,15 +1649,15 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  github.com/browserslist/browserslist/10f043e2f8e97f9a419f25c572a8d6174fc0795a:
-    resolution: {tarball: https://codeload.github.com/browserslist/browserslist/tar.gz/10f043e2f8e97f9a419f25c572a8d6174fc0795a}
+  github.com/browserslist/browserslist/fd0c3174cb43dfcf99b685e50e6efb21df818f8f:
+    resolution: {tarball: https://codeload.github.com/browserslist/browserslist/tar.gz/fd0c3174cb43dfcf99b685e50e6efb21df818f8f}
     name: browserslist
     version: 4.20.4
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001355
-      electron-to-chromium: 1.4.158
+      electron-to-chromium: 1.4.160
       escalade: 3.1.1
       node-releases: 2.0.5
       picocolors: 1.0.0

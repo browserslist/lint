@@ -1,17 +1,8 @@
 import browserslist from 'browserslist'
 import pico from 'picocolors'
 
-let NOT_DEAD_QUERY = /^not dead$/i
-let LIMITED_BROWSERS_COUNT = 7
-let LIMITED_BROWSERS_QUERIES = [
-  [browserslist.parser.QUERIES.LAST_BROWSER_MAJOR_VERSIONS, 2],
-  [browserslist.parser.QUERIES.LAST_BROWSER_VERSIONS, 2],
-  [browserslist.parser.QUERIES.UNRELEASED_BROWSER_VERSIONS, 1],
-  [browserslist.parser.QUERIES.BROWSER_RANGE, 1],
-  [browserslist.parser.QUERIES.BROWSER_RAY, 1],
-  [browserslist.parser.QUERIES.BROWSER_VERSION, 1]
-]
-let COUNTRIES_1M = [
+const LIMITED_BROWSERS_COUNT = 4
+const COUNTRIES_1M = [
   'AE',
   'AF',
   'AL',
@@ -170,129 +161,80 @@ let COUNTRIES_1M = [
   'ZM',
   'ZW'
 ]
-let COUNTRIES_MIN_COVERAGE = 80
+const COUNTRIES_MIN_COVERAGE = 80
 
 function getTotalCoverage(data) {
   let total = 0
-
   for (let i in data) {
     total += data[i] || 0
   }
-
   return total
 }
 
-let rules = [
-  {
-    id: 'missed-not-dead',
-    check(queries) {
-      let hasLastQuery
-      let hasNotDeadQuery
-
-      queries.some(query => {
-        if (!hasNotDeadQuery && NOT_DEAD_QUERY.test(query)) {
-          hasNotDeadQuery = true
-        } else if (!hasLastQuery) {
-          hasLastQuery =
-            browserslist.parser.QUERIES.LAST_MAJOR_VERSIONS.test(query) ||
-            browserslist.parser.QUERIES.LAST_VERSIONS.test(query)
-        }
-
-        return hasLastQuery && hasNotDeadQuery
-      })
-
-      return hasLastQuery && !hasNotDeadQuery
-    },
-    message: '`not dead` query skipped when using `last N versions` query'
+const CHECKS = {
+  missedNotDead(ast) {
+    let hasLastQuery = ast.some(query => query.type.startsWith('last_'))
+    let hasNotDeadQuery = ast.some(query => query.type === 'dead' && query.not)
+    if (hasLastQuery && !hasNotDeadQuery) {
+      return '`not dead` query skipped when using `last N versions` query'
+    } else {
+      return false
+    }
   },
-  {
-    id: 'limited-browsers',
-    check(queries) {
-      let browsers = []
-      let match
-      let onlyBrowsersQueries = queries.every(query => {
-        return LIMITED_BROWSERS_QUERIES.some(regexp => {
-          match = regexp[0].exec(query)
 
-          if (match) {
-            match = match[regexp[1]]
-
-            if (match) {
-              if (browsers.indexOf(match) === -1) {
-                browsers.push(match)
-              }
-
-              return true
-            }
-          }
-
-          return false
-        })
-      })
-
-      return onlyBrowsersQueries && browsers.length < LIMITED_BROWSERS_COUNT
-    },
-    message: 'given config is narrowly limited'
+  limitedBrowsers(ast) {
+    let browsers = new Set(ast.map(query => query.browser))
+    let onlyBrowsersQueries = ast.every(query => 'browser' in query)
+    if (onlyBrowsersQueries && browsers.size < LIMITED_BROWSERS_COUNT) {
+      return 'given config is narrowly limited for specific vendors'
+    } else {
+      return false
+    }
   },
-  {
-    id: 'country-was-ignored',
-    check(queries, opts) {
-      let coverage
-      let countries = []
-      let tx = 0
 
-      COUNTRIES_1M.forEach(country => {
-        coverage = browserslist.coverage(browserslist(queries, opts), country)
-        tx = 100 / getTotalCoverage(browserslist.usage[country])
-
-        if (coverage * tx < COUNTRIES_MIN_COVERAGE) {
-          countries.push(country)
-        }
-      })
-
-      return countries.length ? countries : false
-    },
-    message(meta) {
+  countryWasIgnored(ast, browsers) {
+    let coverage
+    let countries = []
+    let tx = 0
+    COUNTRIES_1M.forEach(country => {
+      coverage = browserslist.coverage(browsers, country)
+      tx = 100 / getTotalCoverage(browserslist.usage[country])
+      if (coverage * tx < COUNTRIES_MIN_COVERAGE) {
+        countries.push(country)
+      }
+    })
+    if (countries.length > 0) {
       let msg = 'given config has poor coverage in '
-      let regions = meta.slice(0, 5).join(', ')
-
-      if (meta.length > 5) {
-        regions += ' and ' + (meta.length - 5) + ' more regions'
-      } /* c8 ignore start */ else {
-        regions = regions.replace(/, (\w+)$/, ' and $1 regions')
-      } /* c8 ignore end */
-
+      let regions = countries.slice(0, 5).join(', ')
+      if (countries.length > 5) {
+        regions += ', and ' + (countries.length - 5) + ' more regions'
+      } else {
+        /* c8 ignore next */
+        regions = regions.replace(/, (\w+)$/, ', and $1 regions')
+      }
       return msg + regions
+    } else {
+      return false
     }
   }
-]
+}
 
 export function lint(queries, opts) {
-  let meta
+  let ast = browserslist.parse(queries, opts)
+  let browsers = browserslist(queries, opts)
 
-  if (typeof queries === 'string') {
-    queries = [queries]
-  }
-
-  return rules.reduce((problems, rule) => {
-    meta = rule.check(queries, opts)
-
-    if (meta) {
-      problems.push({
-        id: rule.id,
-        message:
-          typeof rule.message === 'function' ? rule.message(meta) : rule.message
-      })
+  let problems = []
+  for (let id in CHECKS) {
+    let message = CHECKS[id](ast, browsers)
+    if (message) {
+      problems.push({ id, message })
     }
-
-    return problems
-  }, [])
+  }
+  return problems
 }
 
 export function formatReport(problems) {
-  if (!problems.length) {
-    return ''
-  }
+  if (!problems.length) return ''
 
   let report = ''
   let maxProblemIdWidth = problems.reduce((prev, problem) => {
