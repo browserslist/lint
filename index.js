@@ -2,166 +2,63 @@ import browserslist from 'browserslist'
 import pico from 'picocolors'
 
 const LIMITED_BROWSERS_COUNT = 4
-const COUNTRIES_1M = [
-  'AE',
-  'AF',
-  'AL',
-  'AM',
-  'AO',
-  'AR',
-  'AT',
-  'AU',
-  'AZ',
-  'BA',
-  'BD',
-  'BE',
-  'BF',
-  'BG',
-  'BH',
-  'BI',
-  'BJ',
-  'BO',
-  'BR',
-  'BW',
-  'BY',
-  'CA',
-  'CD',
-  'CF',
-  'CG',
-  'CH',
-  'CI',
-  'CL',
-  'CM',
-  'CN',
-  'CO',
-  'CR',
-  'CU',
-  'CY',
-  'CZ',
-  'DE',
-  'DK',
-  'DO',
-  'EC',
-  'EE',
-  'EG',
-  'ER',
-  'ES',
-  'ET',
-  'FI',
-  'FR',
-  'GA',
-  'GB',
-  'GE',
-  'GH',
-  'GM',
-  'GN',
-  'GQ',
-  'GR',
-  'GT',
-  'GW',
-  'HK',
-  'HN',
-  'HR',
-  'HT',
-  'HU',
-  'ID',
-  'IE',
-  'IL',
-  'IN',
-  'IQ',
-  'IR',
-  'IT',
-  'JM',
-  'JO',
-  'JP',
-  'KE',
-  'KG',
-  'KH',
-  'KP',
-  'KR',
-  'KW',
-  'KZ',
-  'LA',
-  'LB',
-  'LK',
-  'LR',
-  'LS',
-  'LT',
-  'LV',
-  'LY',
-  'MA',
-  'MD',
-  'MG',
-  'MK',
-  'ML',
-  'MM',
-  'MN',
-  'MR',
-  'MU',
-  'MW',
-  'MX',
-  'MY',
-  'MZ',
-  'NA',
-  'NE',
-  'NG',
-  'NI',
-  'NL',
-  'NO',
-  'NP',
-  'NZ',
-  'OM',
-  'PA',
-  'PE',
-  'PG',
-  'PH',
-  'PK',
-  'PL',
-  'PR',
-  'PS',
-  'PT',
-  'PY',
-  'QA',
-  'RO',
-  'RS',
-  'RU',
-  'RW',
-  'SA',
-  'SD',
-  'SE',
-  'SG',
-  'SI',
-  'SK',
-  'SL',
-  'SN',
-  'SO',
-  'SV',
-  'SY',
-  'SZ',
-  'TD',
-  'TG',
-  'TH',
-  'TJ',
-  'TL',
-  'TM',
-  'TN',
-  'TR',
-  'TT',
-  'TW',
-  'TZ',
-  'UA',
-  'UG',
-  'US',
-  'UY',
-  'UZ',
-  'VE',
-  'VN',
-  'YE',
-  'ZA',
-  'ZM',
-  'ZW'
-]
 const COUNTRIES_MIN_COVERAGE = 80
+// https://en.wikipedia.org/wiki/List_of_countries_by_number_of_Internet_users
+const COUNTRIES_10M = {
+  CN: 'China',
+  IN: 'India',
+  US: 'United States',
+  ID: 'Indonesia',
+  BR: 'Brazil',
+  NG: 'Nigeria',
+  BD: 'Bangladesh',
+  RU: 'Russia',
+  PK: 'Pakistan',
+  JP: 'Japan',
+  MX: 'Mexico',
+  IR: 'Iran',
+  DE: 'Germany',
+  PH: 'Philippines',
+  TR: 'Turkey',
+  VN: 'Vietnam',
+  GB: 'United Kingdom',
+  FR: 'France',
+  EG: 'Egypt',
+  TH: 'Thailand',
+  IT: 'Italy',
+  KR: 'South Korea',
+  ES: 'Spain',
+  PL: 'Poland',
+  CA: 'Canada',
+  AR: 'Argentina',
+  ZA: 'South Africa',
+  UA: 'Ukraine',
+  CO: 'Colombia',
+  TZ: 'Tanzania',
+  SA: 'Saudi Arabia',
+  DZ: 'Algeria',
+  MY: 'Malaysia',
+  MA: 'Morocco',
+  TW: 'Taiwan',
+  AU: 'Australia',
+  VE: 'Venezuela',
+  ET: 'Ethiopia',
+  IQ: 'Iraq',
+  UZ: 'Uzbekistan',
+  MM: 'Myanmar',
+  NP: 'Nepal',
+  NL: 'Netherlands',
+  PE: 'Peru',
+  GH: 'Ghana',
+  CL: 'Chile',
+  KZ: 'Kazakhstan',
+  RO: 'Romania',
+  SD: 'Sudan',
+  GT: 'Guatemala',
+  CI: 'Ivory Coast',
+  UG: 'Uganda',
+  BE: 'Belgium'
+}
 
 function getTotalCoverage(data) {
   let total = 0
@@ -176,7 +73,7 @@ const CHECKS = {
     let hasLastQuery = ast.some(query => query.type.startsWith('last_'))
     let hasNotDeadQuery = ast.some(query => query.type === 'dead' && query.not)
     if (hasLastQuery && !hasNotDeadQuery) {
-      return '`not dead` query skipped when using `last N versions` query'
+      return 'The `not dead` query skipped when using `last N versions` query'
     } else {
       return false
     }
@@ -186,7 +83,7 @@ const CHECKS = {
     let browsers = new Set(ast.map(query => query.browser))
     let onlyBrowsersQueries = ast.every(query => 'browser' in query)
     if (onlyBrowsersQueries && browsers.size < LIMITED_BROWSERS_COUNT) {
-      return 'given config is narrowly limited for specific vendors'
+      return 'Given config is narrowly limited for specific vendors'
     } else {
       return false
     }
@@ -196,23 +93,20 @@ const CHECKS = {
     let coverage
     let countries = []
     let tx = 0
-    COUNTRIES_1M.forEach(country => {
-      coverage = browserslist.coverage(browsers, country)
-      tx = 100 / getTotalCoverage(browserslist.usage[country])
+    for (let code in COUNTRIES_10M) {
+      coverage = browserslist.coverage(browsers, code)
+      tx = 100 / getTotalCoverage(browserslist.usage[code])
       if (coverage * tx < COUNTRIES_MIN_COVERAGE) {
-        countries.push(country)
+        countries.push(COUNTRIES_10M[code])
       }
-    })
+    }
     if (countries.length > 0) {
-      let msg = 'poor coverage in '
-      let regions = countries.slice(0, 5).join(', ')
-      if (countries.length > 5) {
-        regions += ', and ' + (countries.length - 5) + ' more regions'
-      } else {
-        /* c8 ignore next */
-        regions = regions.replace(/, (\w+)$/, ', and $1 regions')
+      let msg = 'Less than 80% coverage in '
+      let names = countries.map(i => '`' + i + '`')
+      if (names.length > 5) {
+        names = names.slice(0, 5).concat([`${countries.length - 5} more`])
       }
-      return msg + regions
+      return msg + names.join(', ').replace(/, ([^,]+)$/, ', and $1 regions')
     } else {
       return false
     }

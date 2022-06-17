@@ -61,10 +61,10 @@ test('formats report', () => {
   equal(
     formatReport(lint('last 2 versions')),
     '' +
-      'missedNotDead      not dead query skipped when using ' +
+      'missedNotDead      The not dead query skipped when using ' +
       'last N versions query\n' +
-      'countryWasIgnored  poor coverage in AM, AU, BE, CA, CH, ' +
-      'and 22 more regions\n' +
+      'countryWasIgnored  Less than 80% coverage in China, United States, ' +
+      'Russia, Germany, United Kingdom, and 5 more regions\n' +
       '\n' +
       '✖ 2 problems\n'
   )
