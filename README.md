@@ -15,4 +15,4 @@ Rules:
 * `missedNotDead`: lack of `no dead` with queries like `last 2 versions`.
 * `countryWasIgnored`: bad coverage in some country with >10M Internet users.
 * `limitedBrowsers`: ignoring browsers diversity by calling only
-  a few browsers directly (like `last 2 Chrome browsers`) in config.
+  a few browsers directly in config.
