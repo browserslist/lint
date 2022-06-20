@@ -30,7 +30,7 @@ function isArg(arg) {
 }
 
 function error(msg) {
-  process.stderr.write('browserslist: ' + msg + '\n')
+  process.stderr.write('browserslist-lint: ' + msg + '\n')
   process.exit(1)
 }
 
