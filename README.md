@@ -16,3 +16,8 @@ Rules:
 * `countryWasIgnored`: bad coverage in some country with >10M Internet users.
 * `limitedBrowsers`: ignoring browsers diversity by calling only
   a few browsers directly in config.
+
+<a href="https://evilmartians.com/?utm_source=browserslist-lint">
+  <img src="https://evilmartians.com/badges/sponsored-by-evil-martians.svg"
+       alt="Sponsored by Evil Martians" width="236" height="54">
+</a>
