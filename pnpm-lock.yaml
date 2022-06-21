@@ -2,7 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@logux/eslint-config': ^47.2.0
-  browserslist: github:browserslist/browserslist
+  browserslist: ^4.21.0
   c8: ^7.11.3
   clean-publish: ^4.0.1
   eslint: ^8.18.0
@@ -16,7 +16,7 @@ specifiers:
   uvu: ^0.5.3
 
 dependencies:
-  browserslist: github.com/browserslist/browserslist/90d04ae0ce49a1b82d48a1712eecd856226dbd83
+  browserslist: 4.21.0
   picocolors: 1.0.0
 
 devDependencies:
@@ -216,6 +216,17 @@ packages:
     dependencies:
       fill-range: 7.0.1
     dev: true
+
+  /browserslist/4.21.0:
+    resolution: {integrity: sha512-UQxE0DIhRB5z/zDz9iA03BOfxaN2+GQdBYH/2WrSIWEUrnpzTPJbhqt+umq6r3acaPRTW1FNTkrcp0PXgtFkvA==}
+    engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
+    hasBin: true
+    dependencies:
+      caniuse-lite: 1.0.30001358
+      electron-to-chromium: 1.4.164
+      node-releases: 2.0.5
+      update-browserslist-db: 1.0.0
+    dev: false
 
   /builtins/5.0.1:
     resolution: {integrity: sha512-qwVpFEHNfhYJIzNRBvd2C1kyo6jz3ZSMPyyuR47OPdiKWlbYnZNyDWuyR175qDnAJLiCo5fBBqPb3RiXgWlkOQ==}
@@ -1514,6 +1525,14 @@ packages:
       which-boxed-primitive: 1.0.2
     dev: true
 
+  /update-browserslist-db/1.0.0:
+    resolution: {integrity: sha512-3Y+NfVggCCf5OmVvHx9vI4TqOp0gqiSUHcwyUr1I4n+KQ7CruV1z8kRx3FbPLpp6vN/wR6w1mZqe20N1ozobzg==}
+    hasBin: true
+    dependencies:
+      escalade: 3.1.1
+      picocolors: 1.0.0
+    dev: false
+
   /uri-js/4.4.1:
     resolution: {integrity: sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==}
     dependencies:
@@ -1611,26 +1630,3 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
     dev: true
-
-  github.com/browserslist/browserslist/90d04ae0ce49a1b82d48a1712eecd856226dbd83:
-    resolution: {tarball: https://codeload.github.com/browserslist/browserslist/tar.gz/90d04ae0ce49a1b82d48a1712eecd856226dbd83}
-    name: browserslist
-    version: 4.20.4
-    engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
-    hasBin: true
-    dependencies:
-      caniuse-lite: 1.0.30001358
-      electron-to-chromium: 1.4.164
-      node-releases: 2.0.5
-      update-browserslist-db: github.com/browserslist/update-db/9981b5dbf411287501269d90923dc247bb1e60f4
-    dev: false
-
-  github.com/browserslist/update-db/9981b5dbf411287501269d90923dc247bb1e60f4:
-    resolution: {tarball: https://codeload.github.com/browserslist/update-db/tar.gz/9981b5dbf411287501269d90923dc247bb1e60f4}
-    name: update-browserslist-db
-    version: 0.0.0
-    hasBin: true
-    dependencies:
-      escalade: 3.1.1
-      picocolors: 1.0.0
-    dev: false

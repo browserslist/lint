@@ -31,7 +31,7 @@
     "unit": "NODE_ENV=test uvu test .test.js"
   },
   "dependencies": {
-    "browserslist": "github:browserslist/browserslist",
+    "browserslist": "^4.21.0",
     "picocolors": "^1.0.0"
   },
   "bin": {
