@@ -8,8 +8,7 @@ with target browsers for popular mistakes.
 
 ```sh
 npx browserslist-lint
-```<img width="120" height="120" alt="Browserslist logo by Anton Popov"
-     src="https://browsersl.ist/logo.svg" align="right">
+```
 
 Rules:
 
