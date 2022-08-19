@@ -63,8 +63,8 @@ test('formats report', () => {
     '' +
       'missedNotDead      The not dead query skipped when using ' +
       'last N versions query\n' +
-      'countryWasIgnored  Less than 80% coverage in China, United States, ' +
-      'Russia, Germany, United Kingdom, and 5 more regions\n' +
+      'countryWasIgnored  Less than 80% coverage in China, ' +
+      'and India regions\n' +
       '\n' +
       '✖ 2 problems\n'
   )
