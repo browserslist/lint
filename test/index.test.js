@@ -55,6 +55,7 @@ test('reports limited-browsers problem', () => {
 test('reports country-was-ignored problem', () => {
   hasProblem(lint(['last 2 versions']), 'countryWasIgnored')
   doesNotHaveProblem(lint(['last 100 versions']), 'countryWasIgnored')
+  doesNotHaveProblem(lint(['maintained node versions']), 'countryWasIgnored')
 })
 
 test('formats report', () => {
