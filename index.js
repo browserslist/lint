@@ -90,11 +90,15 @@ const CHECKS = {
   },
 
   countryWasIgnored(ast, browsers) {
+    // The Node.js is not in the Can I Use db
+    let browsersWithStats = browsers.filter(i => !i.startsWith('node'))
+    if (!browsersWithStats.length) return false
+
     let coverage
     let countries = []
     let tx = 0
     for (let code in COUNTRIES_10M) {
-      coverage = browserslist.coverage(browsers, code)
+      coverage = browserslist.coverage(browsersWithStats, code)
       tx = 100 / getTotalCoverage(browserslist.usage[code])
       if (coverage * tx < COUNTRIES_MIN_COVERAGE) {
         countries.push(COUNTRIES_10M[code])
