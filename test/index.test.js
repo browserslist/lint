@@ -53,19 +53,19 @@ test('reports limited-browsers problem', () => {
 })
 
 test('reports country-was-ignored problem', () => {
-  hasProblem(lint(['last 2 versions']), 'countryWasIgnored')
+  hasProblem(lint(['last 1 versions']), 'countryWasIgnored')
   doesNotHaveProblem(lint(['last 100 versions']), 'countryWasIgnored')
   doesNotHaveProblem(lint(['maintained node versions']), 'countryWasIgnored')
 })
 
 test('formats report', () => {
   equal(
-    formatReport(lint('last 2 versions')),
+    formatReport(lint('last 1 versions')),
     '' +
       'missedNotDead      The not dead query skipped when using ' +
       'last N versions query\n' +
-      'countryWasIgnored  Less than 80% coverage in China, ' +
-      'and India regions\n' +
+      'countryWasIgnored  Less than 80% coverage in China, United States, ' +
+      'Brazil, Russia, Japan, and 31 more regions\n' +
       '\n' +
       '✖ 2 problems\n'
   )
