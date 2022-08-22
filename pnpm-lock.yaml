@@ -9,7 +9,7 @@ specifiers:
   eslint-config-standard: ^17.0.0
   eslint-plugin-es5: ^1.5.0
   eslint-plugin-import: ^2.26.0
-  eslint-plugin-n: ^15.2.4
+  eslint-plugin-n: ^15.2.5
   eslint-plugin-prefer-let: ^3.0.1
   eslint-plugin-promise: ^6.0.0
   picocolors: ^1.0.0
@@ -20,14 +20,14 @@ dependencies:
   picocolors: 1.0.0
 
 devDependencies:
-  '@logux/eslint-config': 47.2.0_yu2allr4k57q56xe463cam3gou
+  '@logux/eslint-config': 47.2.0_3hkaelpnrfeekbbmf2fwrl6hce
   c8: 7.12.0
   clean-publish: 4.0.1
   eslint: 8.22.0
-  eslint-config-standard: 17.0.0_zbdqnta3mhnrvw4yywdsj5qdqy
+  eslint-config-standard: 17.0.0_eajzxmi3zels7cxxzs557zaf3u
   eslint-plugin-es5: 1.5.0_eslint@8.22.0
   eslint-plugin-import: 2.26.0_eslint@8.22.0
-  eslint-plugin-n: 15.2.4_eslint@8.22.0
+  eslint-plugin-n: 15.2.5_eslint@8.22.0
   eslint-plugin-prefer-let: 3.0.1
   eslint-plugin-promise: 6.0.0_eslint@8.22.0
   uvu: 0.5.6
@@ -95,7 +95,7 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.14
     dev: true
 
-  /@logux/eslint-config/47.2.0_yu2allr4k57q56xe463cam3gou:
+  /@logux/eslint-config/47.2.0_3hkaelpnrfeekbbmf2fwrl6hce:
     resolution: {integrity: sha512-nNPPkw+kfA2bLyhkxaqGzd3MWSN4S2dUf69xo2syskBd5ZfFk2WT9ssO+yDDUd26yNgN3AmweKztEwyUim9wOQ==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
@@ -107,9 +107,9 @@ packages:
       eslint-plugin-promise: ^6.0.0
     dependencies:
       eslint: 8.22.0
-      eslint-config-standard: 17.0.0_zbdqnta3mhnrvw4yywdsj5qdqy
+      eslint-config-standard: 17.0.0_eajzxmi3zels7cxxzs557zaf3u
       eslint-plugin-import: 2.26.0_eslint@8.22.0
-      eslint-plugin-n: 15.2.4_eslint@8.22.0
+      eslint-plugin-n: 15.2.5_eslint@8.22.0
       eslint-plugin-prefer-let: 3.0.1
       eslint-plugin-promise: 6.0.0_eslint@8.22.0
     dev: true
@@ -231,7 +231,7 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001378
+      caniuse-lite: 1.0.30001381
       electron-to-chromium: 1.4.225
       node-releases: 2.0.6
       update-browserslist-db: 1.0.5_browserslist@4.21.3
@@ -274,8 +274,8 @@ packages:
     engines: {node: '>=6'}
     dev: true
 
-  /caniuse-lite/1.0.30001378:
-    resolution: {integrity: sha512-JVQnfoO7FK7WvU4ZkBRbPjaot4+YqxogSDosHv0Hv5mWpUESmN+UubMU6L/hGz8QlQ2aY5U0vR6MOs6j/CXpNA==}
+  /caniuse-lite/1.0.30001381:
+    resolution: {integrity: sha512-fEnkDOKpvp6qc+olg7+NzE1SqyfiyKf4uci7fAU38M3zxs0YOyKOxW/nMZ2l9sJbt7KZHcDIxUnbI0Iime7V4w==}
     dev: false
 
   /chalk/4.1.2:
@@ -473,7 +473,7 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /eslint-config-standard/17.0.0_zbdqnta3mhnrvw4yywdsj5qdqy:
+  /eslint-config-standard/17.0.0_eajzxmi3zels7cxxzs557zaf3u:
     resolution: {integrity: sha512-/2ks1GKyqSOkH7JFvXJicu0iMpoojkwB+f5Du/1SC0PtBL+s8v30k9njRZ21pm2drKYm2342jFnGWzttxPmZVg==}
     peerDependencies:
       eslint: ^8.0.1
@@ -483,7 +483,7 @@ packages:
     dependencies:
       eslint: 8.22.0
       eslint-plugin-import: 2.26.0_eslint@8.22.0
-      eslint-plugin-n: 15.2.4_eslint@8.22.0
+      eslint-plugin-n: 15.2.5_eslint@8.22.0
       eslint-plugin-promise: 6.0.0_eslint@8.22.0
     dev: true
 
@@ -573,8 +573,8 @@ packages:
       - supports-color
     dev: true
 
-  /eslint-plugin-n/15.2.4_eslint@8.22.0:
-    resolution: {integrity: sha512-tjnVMv2fiXYMnuiIFI8QMtyUFI42SckEEWvi8h68SWGWshfqO6SSCASy24dGMGAiy7NUk6DZt90DM0iNUsmQ5w==}
+  /eslint-plugin-n/15.2.5_eslint@8.22.0:
+    resolution: {integrity: sha512-8+BYsqiyZfpu6NXmdLOXVUfk8IocpCjpd8nMRRH0A9ulrcemhb2VI9RSJMEy5udx++A/YcVPD11zT8hpFq368g==}
     engines: {node: '>=12.22.0'}
     peerDependencies:
       eslint: '>=7.0.0'
