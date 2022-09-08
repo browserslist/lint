@@ -68,11 +68,15 @@ function getTotalCoverage(data) {
   return total
 }
 
+function concat(array) {
+  return array.join(', ').replace(/, ([^,]+)$/, ', and $1')
+}
+
 const CHECKS = {
   missedNotDead(ast) {
-    let hasLastQuery = ast.some(query => query.type.startsWith('last_'))
-    let hasNotDeadQuery = ast.some(query => query.type === 'dead' && query.not)
-    if (hasLastQuery && !hasNotDeadQuery) {
+    let hasLast = ast.some(query => query.type.startsWith('last_'))
+    let hasNotDead = ast.some(query => query.type === 'dead' && query.not)
+    if (hasLast && !hasNotDead) {
       return 'The `not dead` query skipped when using `last N versions` query'
     } else {
       return false
@@ -110,7 +114,30 @@ const CHECKS = {
       if (names.length > 5) {
         names = names.slice(0, 5).concat([`${countries.length - 5} more`])
       }
-      return msg + names.join(', ').replace(/, ([^,]+)$/, ', and $1 regions')
+      return msg + concat(names) + ' regions'
+    } else {
+      return false
+    }
+  },
+
+  alreadyDead(ast) {
+    let hasNotDead = ast.some(query => query.type === 'dead' && query.not)
+    let hasDefaults = ast.some(query => query.type === 'defaults' && !query.not)
+    if (!hasNotDead && !hasDefaults) return false
+
+    let dead = browserslist('dead')
+    let duplicates = ast
+      .filter(query => query.type === 'browser_version' && query.not)
+      .map(query => `${query.browser} ${query.version}`)
+      .filter(str => dead.includes(str))
+
+    if (duplicates.length > 0) {
+      let str = concat(duplicates.map(i => '`not ' + i + '`')) + ' already in '
+      if (hasNotDead) {
+        return str + '`not dead`'
+      } else {
+        return str + '`defaults`'
+      }
     } else {
       return false
     }

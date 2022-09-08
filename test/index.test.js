@@ -13,7 +13,7 @@ function doesNotHaveProblem(problems, id) {
   equal(problems.filter(p => p.id === id).length, 0)
 }
 
-test('reports missed-not-dead problem', () => {
+test('reports missedNotDead problem', () => {
   hasProblem(
     lint(['last 2 major versions', 'last 2 versions']),
     'missedNotDead'
@@ -24,7 +24,7 @@ test('reports missed-not-dead problem', () => {
   )
 })
 
-test('reports limited-browsers problem', () => {
+test('reports limitedBrowsers problem', () => {
   hasProblem(
     lint([
       'last 2 firefox versions',
@@ -52,10 +52,16 @@ test('reports limited-browsers problem', () => {
   )
 })
 
-test('reports country-was-ignored problem', () => {
+test('reports countryWasIgnored problem', () => {
   hasProblem(lint(['last 1 versions']), 'countryWasIgnored')
   doesNotHaveProblem(lint(['last 100 versions']), 'countryWasIgnored')
   doesNotHaveProblem(lint(['maintained node versions']), 'countryWasIgnored')
+})
+
+test('reports alreadyDead problem', () => {
+  hasProblem(lint(['>1%, not ie 11, not dead']), 'alreadyDead')
+  hasProblem(lint(['defaults, not ie 11']), 'alreadyDead')
+  doesNotHaveProblem(lint(['>1%, not ie 11']), 'alreadyDead')
 })
 
 test('formats report', () => {
@@ -68,6 +74,13 @@ test('formats report', () => {
       'Brazil, Russia, Japan, and 31 more regions\n' +
       '\n' +
       '✖ 2 problems\n'
+  )
+  equal(
+    formatReport(lint(['>0%', 'not dead', 'not ie 11', 'not bb 10'])),
+    '' +
+      'alreadyDead  not ie 11, and not bb 10 already in not dead\n' +
+      '\n' +
+      '✖ 1 problems\n'
   )
   equal(formatReport(lint('>0%')), '')
 })

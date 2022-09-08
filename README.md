@@ -16,6 +16,7 @@ Rules:
 * `countryWasIgnored`: bad coverage in some country with >10M Internet users.
 * `limitedBrowsers`: ignoring browsers diversity by calling only
   a few browsers directly in config.
+* `alreadyDead`: browser with `not` is already in `not dead` or `defaults`.
 
 <a href="https://evilmartians.com/?utm_source=browserslist-lint">
   <img src="https://evilmartians.com/badges/sponsored-by-evil-martians.svg"
