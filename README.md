@@ -22,3 +22,18 @@ Rules:
   <img src="https://evilmartians.com/badges/sponsored-by-evil-martians.svg"
        alt="Sponsored by Evil Martians" width="236" height="54">
 </a>
+
+
+## JS API
+
+```js
+import { lint } from 'browserslist-lint'
+
+lint(['last 1 version']) // => [{
+                         //      id: 'alreadyDead',
+                         //      message: '`not ie 11` already in `defaults`'
+                         //    }]
+
+// Without option with find Browserslist automatically
+lint() // => [{ id, message }]
+```
