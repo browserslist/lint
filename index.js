@@ -128,7 +128,11 @@ const CHECKS = {
     let dead = browserslist('dead')
     let duplicates = ast
       .filter(query => query.type === 'browser_version' && query.not)
-      .map(query => `${query.browser} ${query.version}`)
+      .map(query => {
+        let name = query.browser.toLowerCase()
+        let normalized = browserslist.aliases[name] || name
+        return `${normalized} ${query.version}`
+      })
       .filter(str => dead.includes(str))
 
     if (duplicates.length > 0) {

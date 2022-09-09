@@ -60,6 +60,8 @@ test('reports countryWasIgnored problem', () => {
 
 test('reports alreadyDead problem', () => {
   hasProblem(lint(['>1%, not ie 11, not dead']), 'alreadyDead')
+  hasProblem(lint(['>1%, not IE 11, not dead']), 'alreadyDead')
+  hasProblem(lint(['>1%, not Explorer 11, not dead']), 'alreadyDead')
   hasProblem(lint(['defaults, not ie 11']), 'alreadyDead')
   doesNotHaveProblem(lint(['>1%, not ie 11']), 'alreadyDead')
 })
