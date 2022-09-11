@@ -29,10 +29,10 @@ Rules:
 ```js
 import { lint } from 'browserslist-lint'
 
-lint(['last 1 version']) // => [{
-                         //      id: 'alreadyDead',
-                         //      message: '`not ie 11` already in `defaults`'
-                         //    }]
+lint('defaults, not ie 11') // => [{
+                            //      id: 'alreadyDead',
+                            //      message: '`not ie 11` already in `defaults`'
+                            //    }]
 
 // Without option with find Browserslist automatically
 lint() // => [{ id, message }]
