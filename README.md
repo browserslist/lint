@@ -10,6 +10,8 @@ with target browsers for popular mistakes.
 npx browserslist-lint
 ```
 
+Or try online: [`browsersl.ist`](https://browsersl.ist/)
+
 Rules:
 
 * `missedNotDead`: lack of `no dead` with queries like `last 2 versions`.
