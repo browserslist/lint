@@ -162,8 +162,9 @@ export function lint(queries, opts) {
 
   let problems = []
   for (let id in CHECKS) {
-    let [message, fixed] = CHECKS[id](ast, browsers)
-    if (message) {
+    let messages = CHECKS[id](ast, browsers)
+    if (messages) {
+      let [message, fixed] = messages
       problems.push({ id, message, fixed })
     }
   }
