@@ -77,7 +77,10 @@ const CHECKS = {
     let hasLast = ast.some(query => query.type.startsWith('last_'))
     let hasNotDead = ast.some(query => query.type === 'dead' && query.not)
     if (hasLast && !hasNotDead) {
-      return 'The `not dead` query skipped when using `last N versions` query'
+      return [
+        'The `not dead` query skipped when using `last N versions` query',
+        'fixed missedNotDead'
+      ]
     } else {
       return false
     }
@@ -87,7 +90,10 @@ const CHECKS = {
     let browsers = new Set(ast.map(query => query.browser))
     let onlyBrowsersQueries = ast.every(query => 'browser' in query)
     if (onlyBrowsersQueries && browsers.size < LIMITED_BROWSERS_COUNT) {
-      return 'Given config is narrowly limited for specific vendors'
+      return [
+        'Given config is narrowly limited for specific vendors',
+        'fixed limitedBrowsers'
+      ]
     } else {
       return false
     }
@@ -114,7 +120,7 @@ const CHECKS = {
       if (names.length > 5) {
         names = names.slice(0, 5).concat([`${countries.length - 5} more`])
       }
-      return msg + concat(names) + ' regions'
+      return [msg + concat(names) + ' regions', 'fixed countryWasIgnored']
     } else {
       return false
     }
@@ -136,12 +142,14 @@ const CHECKS = {
       .filter(str => dead.includes(str))
 
     if (duplicates.length > 0) {
+      let msg
       let str = concat(duplicates.map(i => '`not ' + i + '`')) + ' already in '
       if (hasNotDead) {
-        return str + '`not dead`'
+        msg = str + '`not dead`'
       } else {
-        return str + '`defaults`'
+        msg = str + '`defaults`'
       }
+      return [msg, 'fixed alreadyDead']
     } else {
       return false
     }
@@ -154,9 +162,9 @@ export function lint(queries, opts) {
 
   let problems = []
   for (let id in CHECKS) {
-    let message = CHECKS[id](ast, browsers)
+    let [message, fixed] = CHECKS[id](ast, browsers)
     if (message) {
-      problems.push({ id, message })
+      problems.push({ id, message, fixed })
     }
   }
   return problems
