@@ -76,10 +76,11 @@ const CHECKS = {
   missedNotDead(ast) {
     let hasLast = ast.some(query => query.type.startsWith('last_'))
     let hasNotDead = ast.some(query => query.type === 'dead' && query.not)
+    let fixed = `${ast.map(query => query.query).join(', ')}, not dead`
     if (hasLast && !hasNotDead) {
       return [
         'The `not dead` query skipped when using `last N versions` query',
-        'fixed missedNotDead'
+        fixed
       ]
     } else {
       return false
