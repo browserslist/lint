@@ -90,10 +90,11 @@ const CHECKS = {
   limitedBrowsers(ast) {
     let browsers = new Set(ast.map(query => query.browser))
     let onlyBrowsersQueries = ast.every(query => 'browser' in query)
+    let fixed = `${ast.map(query => query.query).join(', ')}, 2 versions, not dead`
     if (onlyBrowsersQueries && browsers.size < LIMITED_BROWSERS_COUNT) {
       return [
         'Given config is narrowly limited for specific vendors',
-        'fixed limitedBrowsers'
+        fixed
       ]
     } else {
       return false
