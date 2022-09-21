@@ -118,10 +118,15 @@ const CHECKS = {
     if (countries.length > 0) {
       let msg = 'Less than 80% coverage in '
       let names = countries.map(i => '`' + i + '`')
+      let noPopulation = ast
+        .filter(query => query.type !== 'popularity')
+        .map(query => query.query).join(', ')
+
+      let fixed = `> 0.3 %, ${noPopulation}`
       if (names.length > 5) {
         names = names.slice(0, 5).concat([`${countries.length - 5} more`])
       }
-      return [msg + concat(names) + ' regions', 'fixed countryWasIgnored']
+      return [msg + concat(names) + ' regions', fixed]
     } else {
       return false
     }
@@ -194,3 +199,5 @@ export function formatReport(problems) {
 
   return report
 }
+
+lint('> 5%, > 10%, not dead')
