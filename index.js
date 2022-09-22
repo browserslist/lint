@@ -150,6 +150,7 @@ const CHECKS = {
 
     let fixed = ast
       .filter(query => !(query.type === 'browser_version' && query.not && !dead.includes(query.browser)))
+      .map(query => query.query).join(', ')
 
     if (duplicates.length > 0) {
       let msg
