@@ -90,7 +90,7 @@ const CHECKS = {
   limitedBrowsers(ast) {
     let browsers = new Set(ast.map(query => query.browser))
     let onlyBrowsersQueries = ast.every(query => 'browser' in query)
-    let fixed = `${ast.map(query => query.query).join(', ')}, 2 versions, not dead`
+    let fixed = `${ast.map(query => query.query).join(', ')}, last 2 versions, not dead`
     if (onlyBrowsersQueries && browsers.size < LIMITED_BROWSERS_COUNT) {
       return [
         'Given config is narrowly limited for specific vendors',
@@ -123,7 +123,7 @@ const CHECKS = {
         .filter(query => query.type !== 'popularity')
         .map(query => query.query).join(', ')
 
-      let fixed = `> 0.3 %, ${noPopulation}`
+      let fixed = `> 0.3%, ${noPopulation}`
       if (names.length > 5) {
         names = names.slice(0, 5).concat([`${countries.length - 5} more`])
       }
