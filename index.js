@@ -148,6 +148,9 @@ const CHECKS = {
       })
       .filter(str => dead.includes(str))
 
+    let fixed = ast
+      .filter(query => !(query.type === 'browser_version' && query.not && !dead.includes(query.browser)))
+
     if (duplicates.length > 0) {
       let msg
       let str = concat(duplicates.map(i => '`not ' + i + '`')) + ' already in '
@@ -156,7 +159,7 @@ const CHECKS = {
       } else {
         msg = str + '`defaults`'
       }
-      return [msg, 'fixed alreadyDead']
+      return [msg, fixed]
     } else {
       return false
     }
@@ -200,5 +203,3 @@ export function formatReport(problems) {
 
   return report
 }
-
-lint('> 5%, > 10%, not dead')
