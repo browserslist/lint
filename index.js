@@ -123,7 +123,13 @@ const CHECKS = {
         .filter(query => query.type !== 'popularity')
         .map(query => query.query).join(', ')
 
-      let fixed = `> 0.3%, ${noPopulation}`
+      let fixed
+      if (noPopulation) {
+        fixed = `> 0.3%, ${noPopulation}`
+      } else {
+        fixed = '> 0.3%'
+      }
+
       if (names.length > 5) {
         names = names.slice(0, 5).concat([`${countries.length - 5} more`])
       }
