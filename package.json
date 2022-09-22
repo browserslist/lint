@@ -1,6 +1,6 @@
 {
   "name": "browserslist-lint",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Linter for Browserslist config",
   "keywords": [
     "caniuse",
