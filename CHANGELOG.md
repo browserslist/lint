@@ -1,9 +1,6 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## 0.3
-* Changed `CHECKS` return with fixed queries.
-
 ## 0.2.1
 * Fixed `alreadyDead` for non-standard browser names.
 
