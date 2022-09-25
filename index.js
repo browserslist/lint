@@ -77,7 +77,11 @@ const CHECKS = {
     let hasLast = ast.some(query => query.type.startsWith('last_'))
     let hasNotDead = ast.some(query => query.type === 'dead' && query.not)
     if (hasLast && !hasNotDead) {
-      return 'The `not dead` query skipped when using `last N versions` query'
+      return {
+        message:
+          'The `not dead` query skipped when using `last N versions` query',
+        fixed: ast.map(query => query.query).join(', ') + ', not dead'
+      }
     } else {
       return false
     }
@@ -87,7 +91,11 @@ const CHECKS = {
     let browsers = new Set(ast.map(query => query.browser))
     let onlyBrowsersQueries = ast.every(query => 'browser' in query)
     if (onlyBrowsersQueries && browsers.size < LIMITED_BROWSERS_COUNT) {
-      return 'Given config is narrowly limited for specific vendors'
+      return {
+        message: 'Given config is narrowly limited for specific vendors',
+        fixed:
+          ast.map(query => query.query).join(', ') + ', 2 versions, not dead'
+      }
     } else {
       return false
     }
@@ -114,7 +122,10 @@ const CHECKS = {
       if (names.length > 5) {
         names = names.slice(0, 5).concat([`${countries.length - 5} more`])
       }
-      return msg + concat(names) + ' regions'
+      return {
+        message: msg + concat(names) + ' regions',
+        fixed: '>0.3%, ' + ast.map(query => query.query).join(', ')
+      }
     } else {
       return false
     }
@@ -131,16 +142,33 @@ const CHECKS = {
       .map(query => {
         let name = query.browser.toLowerCase()
         let normalized = browserslist.aliases[name] || name
-        return `${normalized} ${query.version}`
+        return {
+          double: `${normalized} ${query.version}`,
+          query: query.query
+        }
       })
-      .filter(str => dead.includes(str))
+      .filter(str => dead.includes(str.double))
 
     if (duplicates.length > 0) {
-      let str = concat(duplicates.map(i => '`not ' + i + '`')) + ' already in '
+      let str =
+        concat(duplicates.map(i => '`not ' + i.double + '`')) + ' already in '
+      let fixedArray = ast.map(query => query.query)
+      duplicates.forEach(rule => {
+        let ruleInFixed = fixedArray.indexOf(rule.query)
+        if (ruleInFixed !== -1) {
+          fixedArray.splice(ruleInFixed, 1)
+        }
+      })
       if (hasNotDead) {
-        return str + '`not dead`'
+        return {
+          message: str + '`not dead`',
+          fixed: fixedArray.join(', ')
+        }
       } else {
-        return str + '`defaults`'
+        return {
+          message: str + '`defaults`',
+          fixed: fixedArray.join(', ')
+        }
       }
     } else {
       return false
@@ -154,9 +182,10 @@ export function lint(queries, opts) {
 
   let problems = []
   for (let id in CHECKS) {
-    let message = CHECKS[id](ast, browsers)
-    if (message) {
-      problems.push({ id, message })
+    let result = CHECKS[id](ast, browsers)
+    if (result) {
+      let { message, fixed } = result
+      problems.push({ id, message, fixed })
     }
   }
   return problems

@@ -5,8 +5,8 @@ import { test } from 'uvu'
 
 import { lint, formatReport } from '../index.js'
 
-function hasProblem(problems, id) {
-  equal(problems.filter(p => p.id === id).length, 1)
+function hasProblem(problems, id, fixed) {
+  equal(problems.filter(p => p.id === id && p.fixed === fixed).length, 1)
 }
 
 function doesNotHaveProblem(problems, id) {
@@ -16,7 +16,8 @@ function doesNotHaveProblem(problems, id) {
 test('reports missedNotDead problem', () => {
   hasProblem(
     lint(['last 2 major versions', 'last 2 versions']),
-    'missedNotDead'
+    'missedNotDead',
+    'last 2 major versions, last 2 versions, not dead'
   )
   doesNotHaveProblem(
     lint(['last 2 major versions', 'last 2 versions', 'not dead']),
@@ -25,18 +26,20 @@ test('reports missedNotDead problem', () => {
 })
 
 test('reports limitedBrowsers problem', () => {
+  let problemQueries = [
+    'last 2 firefox versions',
+    'last 2 firefox major versions',
+    'unreleased firefox versions',
+    'firefox 0-10',
+    'firefox > 0',
+    'firefox 11',
+    'chrome 11',
+    'chrome > 11'
+  ]
   hasProblem(
-    lint([
-      'last 2 firefox versions',
-      'last 2 firefox major versions',
-      'unreleased firefox versions',
-      'firefox 0-10',
-      'firefox > 0',
-      'firefox 11',
-      'chrome 11',
-      'chrome > 11'
-    ]),
-    'limitedBrowsers'
+    lint(problemQueries),
+    'limitedBrowsers',
+    problemQueries.join(', ') + ', 2 versions, not dead'
   )
   doesNotHaveProblem(
     lint([
@@ -53,16 +56,24 @@ test('reports limitedBrowsers problem', () => {
 })
 
 test('reports countryWasIgnored problem', () => {
-  hasProblem(lint(['last 1 versions']), 'countryWasIgnored')
+  hasProblem(
+    lint(['last 1 versions']),
+    'countryWasIgnored',
+    '>0.3%, last 1 versions'
+  )
   doesNotHaveProblem(lint(['last 100 versions']), 'countryWasIgnored')
   doesNotHaveProblem(lint(['maintained node versions']), 'countryWasIgnored')
 })
 
 test('reports alreadyDead problem', () => {
-  hasProblem(lint(['>1%, not ie 11, not dead']), 'alreadyDead')
-  hasProblem(lint(['>1%, not IE 11, not dead']), 'alreadyDead')
-  hasProblem(lint(['>1%, not Explorer 11, not dead']), 'alreadyDead')
-  hasProblem(lint(['defaults, not ie 11']), 'alreadyDead')
+  hasProblem(lint(['>1%, not ie 11, not dead']), 'alreadyDead', '>1%, not dead')
+  hasProblem(lint(['>1%, not IE 11, not dead']), 'alreadyDead', '>1%, not dead')
+  hasProblem(
+    lint(['>1%, not Explorer 11, not dead']),
+    'alreadyDead',
+    '>1%, not dead'
+  )
+  hasProblem(lint(['defaults, not ie 11']), 'alreadyDead', 'defaults')
   doesNotHaveProblem(lint(['>1%, not ie 11']), 'alreadyDead')
 })
 
