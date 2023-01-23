@@ -59,6 +59,7 @@ const COUNTRIES_10M = {
   UG: 'Uganda',
   BE: 'Belgium'
 }
+const MIN_WORLD_USAGE = 0.3
 
 function getTotalCoverage(data) {
   let total = 0
@@ -124,7 +125,14 @@ const CHECKS = {
       }
       return {
         message: msg + concat(names) + ' regions',
-        fixed: '>0.3%, ' + ast.map(query => query.query).join(', ')
+        fixed:
+          '>' +
+          MIN_WORLD_USAGE +
+          '%, ' +
+          ast
+            .filter(query => query.type !== 'popularity')
+            .map(query => query.query)
+            .join(', ')
       }
     } else {
       return false
