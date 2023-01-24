@@ -62,7 +62,7 @@ test('reports countryWasIgnored problem', () => {
     '>0.3%, last 1 versions'
   )
   hasProblem(
-    lint(['>2%, >0.9%, last 1 versions']),
+    lint(['>2%, >10%, last 1 versions']),
     'countryWasIgnored',
     '>0.3%, last 1 versions'
   )
@@ -89,7 +89,7 @@ test('formats report', () => {
       'missedNotDead      The not dead query skipped when using ' +
       'last N versions query\n' +
       'countryWasIgnored  Less than 80% coverage in China, United States, ' +
-      'Indonesia, Brazil, Russia, and 39 more regions\n' +
+      'Indonesia, Brazil, Russia, and 33 more regions\n' +
       '\n' +
       '✖ 2 problems\n'
   )
