@@ -39,7 +39,7 @@ test('reports limitedBrowsers problem', () => {
   hasProblem(
     lint(problemQueries),
     'limitedBrowsers',
-    problemQueries.join(', ') + ', 2 versions, not dead'
+    problemQueries.join(', ') + ', last 2 versions, not dead'
   )
   doesNotHaveProblem(
     lint([

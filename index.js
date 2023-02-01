@@ -95,7 +95,8 @@ const CHECKS = {
       return {
         message: 'Given config is narrowly limited for specific vendors',
         fixed:
-          ast.map(query => query.query).join(', ') + ', 2 versions, not dead'
+          ast.map(query => query.query).join(', ') +
+          ', last 2 versions, not dead'
       }
     } else {
       return false
