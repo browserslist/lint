@@ -124,16 +124,15 @@ const CHECKS = {
       if (names.length > 5) {
         names = names.slice(0, 5).concat([`${countries.length - 5} more`])
       }
+
       return {
         message: msg + concat(names) + ' regions',
-        fixed:
-          '>' +
-          MIN_WORLD_USAGE +
-          '%, ' +
-          ast
+        fixed: [
+          `>${MIN_WORLD_USAGE}%`,
+          ...ast
             .filter(query => query.type !== 'popularity')
             .map(query => query.query)
-            .join(', ')
+        ].join(', ')
       }
     } else {
       return false

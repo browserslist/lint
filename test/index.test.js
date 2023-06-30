@@ -66,6 +66,11 @@ test('reports countryWasIgnored problem', () => {
     'countryWasIgnored',
     '>0.3%, last 1 versions'
   )
+  hasProblem(
+    lint(['>5%']),
+    'countryWasIgnored',
+    '>0.3%'
+  )
   doesNotHaveProblem(lint(['last 100 versions']), 'countryWasIgnored')
   doesNotHaveProblem(lint(['maintained node versions']), 'countryWasIgnored')
 })
