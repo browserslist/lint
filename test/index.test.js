@@ -1,9 +1,9 @@
 import './no-color.js'
 
-import { equal } from 'uvu/assert'
 import { test } from 'uvu'
+import { equal } from 'uvu/assert'
 
-import { lint, formatReport } from '../index.js'
+import { formatReport, lint } from '../index.js'
 
 function hasProblem(problems, id, fixed) {
   equal(problems.filter(p => p.id === id && p.fixed === fixed).length, 1)
@@ -66,11 +66,7 @@ test('reports countryWasIgnored problem', () => {
     'countryWasIgnored',
     '>0.3%, last 1 versions'
   )
-  hasProblem(
-    lint(['>5%']),
-    'countryWasIgnored',
-    '>0.3%'
-  )
+  hasProblem(lint(['>5%']), 'countryWasIgnored', '>0.3%')
   doesNotHaveProblem(lint(['last 100 versions']), 'countryWasIgnored')
   doesNotHaveProblem(lint(['maintained node versions']), 'countryWasIgnored')
 })
@@ -94,7 +90,7 @@ test('formats report', () => {
       'missedNotDead      The not dead query skipped when using ' +
       'last N versions query\n' +
       'countryWasIgnored  Less than 80% coverage in China, United States, ' +
-      'Indonesia, Brazil, Russia, and 36 more regions\n' +
+      'Indonesia, Brazil, Russia, and 40 more regions\n' +
       '\n' +
       '✖ 2 problems\n'
   )

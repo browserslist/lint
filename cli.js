@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
-import { fileURLToPath } from 'url'
 import { readFileSync } from 'fs'
 import { join } from 'path'
+import { fileURLToPath } from 'url'
 
-import { lint, formatReport } from './index.js'
+import { formatReport, lint } from './index.js'
 
 const ROOT = join(fileURLToPath(import.meta.url), '..')
 
