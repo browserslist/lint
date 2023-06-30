@@ -125,16 +125,14 @@ const CHECKS = {
         names = names.slice(0, 5).concat([`${countries.length - 5} more`])
       }
 
-      let fixedArray = [
-        `>${MIN_WORLD_USAGE}%`,
-        ...ast
-          .filter(query => query.type !== 'popularity')
-          .map(query => query.query)
-      ]
-
       return {
         message: msg + concat(names) + ' regions',
-        fixed: fixedArray.join(', ')
+        fixed: [
+          `>${MIN_WORLD_USAGE}%`,
+          ...ast
+            .filter(query => query.type !== 'popularity')
+            .map(query => query.query)
+        ].join(', ')
       }
     } else {
       return false
