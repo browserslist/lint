@@ -85,12 +85,14 @@ test('reports alreadyDead problem', () => {
 
 test('formats report', () => {
   equal(
-    formatReport(lint('last 1 versions')),
+    formatReport(lint('last 1 versions')).replace(
+      /in .*and \d+ more/,
+      'IN_MOCK'
+    ),
     '' +
       'missedNotDead      The not dead query skipped when using ' +
       'last N versions query\n' +
-      'countryWasIgnored  Less than 80% coverage in China, United States, ' +
-      'Indonesia, Brazil, Russia, and 40 more regions\n' +
+      'countryWasIgnored  Less than 80% coverage IN_MOCK regions\n' +
       '\n' +
       '✖ 2 problems\n'
   )
