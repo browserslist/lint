@@ -25,6 +25,15 @@ Rules:
        alt="Sponsored by Evil Martians" width="236" height="54">
 </a>
 
+## Pre-Commit Hook
+
+This project is also available as a pre-commit hook. Please add the following to your pre-commit configuration.
+
+```yaml
+repos:
+    - repo: https://github.com/browserslist/lint
+      id: browserslist-lint
+```
 
 ## JS API
 
