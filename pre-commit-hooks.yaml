@@ -2,15 +2,15 @@
 - id: browserslist-lint
   name: Validate Browserslist Configuration
   # Command to execute the linter using npx for local installation
-  entry: npx browserslist-linter
+  entry: npx browserslist-lint
   # Specify the language for the hook; 'node' is used for npm-based tools
   language: node
   # Regular expression to match files that should trigger the hook
   # The hook will run if `.browserslistrc` or `package.json` is modified
-  files: ^(\.browserslistrc|package\.json)$
+  files: (\.browserslistrc|package\.json)$
   # Disable passing filenames as arguments since the linter inspects its own targets
   pass_filenames: false
   # Run the hook only when relevant files are modified, not always
   always_run: false
   # Description of the hook to inform users about its purpose
-  description: Validate Browserslist configuration using browserslist-linter.
+  description: Validate Browserslist configuration using browserslist-lint.
