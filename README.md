@@ -27,12 +27,12 @@ Rules:
 
 ## Pre-Commit Hook
 
-This project is also available as a pre-commit hook. Please add the following to your pre-commit configuration.
+This project is also available as a [pre-commit hook](https://pre-commit.com/). Please add the following to your pre-commit configuration.
 
 ```yaml
 repos:
-    - repo: https://github.com/browserslist/lint
-      id: browserslist-lint
+  - repo: https://github.com/browserslist/lint
+    id: browserslist-lint
 ```
 
 ## JS API
