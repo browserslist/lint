@@ -1,6 +1,10 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.4.0
+* Removed Node.js 14, 16, 18 support.
+* Added check the position of `not dead`.
+
 ## 0.3.3
 * Fixed `popularity` auto-fix (by Alexander Chabin)
 
