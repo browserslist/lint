@@ -19,6 +19,11 @@ test('reports missedNotDead problem', () => {
     'missedNotDead',
     'last 2 major versions, last 2 versions, not dead'
   )
+  hasProblem(
+    lint(['last 2 major versions', 'not dead', 'last 2 versions']),
+    'missedNotDead',
+    'last 2 major versions, last 2 versions, not dead'
+  )
   doesNotHaveProblem(
     lint(['last 2 major versions', 'last 2 versions', 'not dead']),
     'missedNotDead'

@@ -75,13 +75,24 @@ function concat(array) {
 
 const CHECKS = {
   missedNotDead(ast) {
-    let hasLast = ast.some(query => query.type.startsWith('last_'))
-    let hasNotDead = ast.some(query => query.type === 'dead' && query.not)
-    if (hasLast && !hasNotDead) {
+    let hasLast = ast.findLastIndex(query => query.type.startsWith('last_'))
+    let hasNotDead = ast.findLastIndex(
+      query => query.type === 'dead' && query.not
+    )
+    if (hasLast !== -1 && hasNotDead === -1) {
       return {
         message:
           'The `not dead` query skipped when using `last N versions` query',
         fixed: ast.map(query => query.query).join(', ') + ', not dead'
+      }
+    } else if (hasNotDead < hasLast) {
+      return {
+        message: 'The `not dead` mast be after `last N versions` query',
+        fixed:
+          ast
+            .map(query => query.query)
+            .filter(query => query !== 'not dead')
+            .join(', ') + ', not dead'
       }
     } else {
       return false
